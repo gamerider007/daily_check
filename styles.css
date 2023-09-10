@@ -17,14 +17,115 @@ body {
   animation-timing-function: linear;
 
   &::before {
-    content: "Gamerider007 on board";
-    font-size: 6rem;
+    content: "If something is important enough, even if the odds are against you, you should still do it.";
+    font-size: 3rem;
     font-weight: 100;
     font-style: normal;
   }
+}
+#title strong {
+  color: #000; /* Set font color to pitch black */
+}
+.fullscreen-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  color: #000;
+}
+
+.fullscreen-switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 
 /* Animations */
 @keyframes bg-scrolling-reverse {
   100% { background-position: 50px 50px; }
 }
+/* Existing CSS styles */
+
+/* New styles for the image */
+.header-image {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto; /* Center the image horizontally */
+  margin-top: 10px; /* Adjust the top margin as needed */
+}
+
+
+/* Add new styles for the stopwatch */
+/* CSS for the stopwatch */
+
+.stopwatch {
+  position: absolute;
+  top: 10px; /* Adjust the top position as needed */
+  left: 10px; /* Adjust the left position as needed */
+  width: 200px;
+}
+
+#display {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 5px;
+}
+
+/* Style for session name input when it's black and bold */
+#sessionName.active {
+  color: black;
+  font-weight: bold;
+}
+
+/* Style for session name input when it's grey and normal */
+#sessionName.inactive {
+  color: grey;
+  font-weight: normal;
+}
+
