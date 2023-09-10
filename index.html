@@ -7,16 +7,130 @@
   <title>Geetesh's Website</title>
 </head>
 <body>
-  <div class="stars">
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <div class="star"></div>
-    <!-- Add more stars as needed -->
-  </div>
-  <div id="title">
-    <strong>Geetesh</strong>
-  </div>
+    <label class="fullscreen-switch">
+        <input type="checkbox" id="fullscreen-toggle">
+        <span class="slider"></span>
+    </label>
+    <div class="stars">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <!-- Add more stars as needed -->
+    </div>
+
+    <!-- Add the image above the quote -->
+    <img src="C:\Users\Hp\Downloads\arkham1.jpg" alt="Your Image" class="header-image">
+
+    <div id="title">
+      <strong>-Geetesh</strong>
+    </div>
+
+    <!-- Stopwatch Section -->
+    <div class="stopwatch">
+      <div id="display">00:00:00</div>
+      <button id="startStop">Start</button>
+      <button id="reset">Reset</button>
+      <!-- Input field for custom session name with styles -->
+      <input type="text" id="sessionName" placeholder="Enter Session Name" class="inactive">
+      <div id="history">
+          <!-- History will be displayed here -->
+      </div>
+    </div>
+
+    <script>
+      const fullscreenToggle = document.getElementById("fullscreen-toggle");
+    
+      fullscreenToggle.addEventListener("change", () => {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          document.documentElement.requestFullscreen().catch(err => {
+            console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+          });
+        }
+      });
+
+      let timer;
+      let running = false;
+      let startTime;
+      let elapsedTime = 0;
+
+      const display = document.getElementById("display");
+      const startStopButton = document.getElementById("startStop");
+      const resetButton = document.getElementById("reset");
+      const sessionNameInput = document.getElementById("sessionName");
+      const historyDiv = document.getElementById("history");
+
+      function formatTime(milliseconds) {
+        const hours = Math.floor(milliseconds / 3600000);
+        const minutes = Math.floor((milliseconds % 3600000) / 60000);
+        const seconds = Math.floor((milliseconds % 60000) / 1000);
+
+        const formattedHours = String(hours).padStart(2, "0");
+        const formattedMinutes = String(minutes).padStart(2, "0");
+        const formattedSeconds = String(seconds).padStart(2, "0");
+
+        return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+      }
+
+      function updateDisplay() {
+        const currentTime = running ? Date.now() - startTime + elapsedTime : elapsedTime;
+        display.textContent = formatTime(currentTime);
+      }
+
+      function startStop() {
+        if (running) {
+          clearInterval(timer);
+          startStopButton.textContent = "Start";
+          elapsedTime += Date.now() - startTime;
+          const sessionName = sessionNameInput.value || "Session"; // Use custom session name or "Session" as default
+          historyData.push(`${sessionName}: ${formatTime(elapsedTime)}`);
+          sessionNameInput.classList.remove("inactive"); // Remove the "inactive" class
+          sessionNameInput.classList.add("active"); // Add the "active" class
+        } else {
+          startTime = Date.now();
+          timer = setInterval(updateDisplay, 1000);
+          startStopButton.textContent = "Stop";
+          sessionNameInput.classList.remove("active"); // Remove the "active" class
+          sessionNameInput.classList.add("inactive"); // Add the "inactive" class
+        }
+        running = !running;
+        updateHistory();
+        saveHistory();
+      }
+
+      function reset() {
+        clearInterval(timer);
+        running = false;
+        startStopButton.textContent = "Start";
+        elapsedTime = 0;
+        sessionNameInput.value = ""; // Clear session name input
+        sessionNameInput.classList.remove("active"); // Remove the "active" class
+        sessionNameInput.classList.add("inactive"); // Add the "inactive" class
+        updateDisplay();
+      }
+
+      function updateHistory() {
+        historyDiv.innerHTML = "";
+        for (const entry of historyData) {
+          const item = document.createElement("div");
+          item.textContent = entry;
+          historyDiv.appendChild(item);
+        }
+      }
+
+      function saveHistory() {
+        localStorage.setItem("stopwatchHistory", JSON.stringify(historyData));
+      }
+
+      startStopButton.addEventListener("click", startStop);
+      resetButton.addEventListener("click", reset);
+
+      const historyData = []; // Array to store history
+
+      updateDisplay();
+    </script>
 </body>
 </html>
